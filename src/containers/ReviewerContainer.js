@@ -6,6 +6,7 @@ import isArrayBuffer from 'is-array-buffer'
 import Review from '../components/Review'
 import PdfContainer from '../containers/PdfContainer'
 import Peer from 'peerjs'
+import Modal from '../components/Modal'
 
 class ReviewerContainer extends React.Component {
   static propTypes = {
@@ -170,6 +171,9 @@ class ReviewerContainer extends React.Component {
         <Review {...review}
                 onSelectFile={this.onSelectFile}/>
           {documentView}
+        <div id="modal"></div>
+        <Modal header={"aaaaaaa"}
+               content={}/>
       </div>
     )
   }

@@ -43,7 +43,7 @@ const Review = ({
 
   return (
     <div className="ui segment">
-      <p>Review: {name} ({id})</p>
+        <p>Review: {name} (<a href={'/review/' + id + '/reviewer'}>{id}</a>)</p>
 
       <div>
         {fileList}
