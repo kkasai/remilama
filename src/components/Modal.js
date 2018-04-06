@@ -26,10 +26,8 @@ class Modal extends React.Component {
     this.state.modalIsOpen = modalIsOpen
     return(
       <div>
-        <button onClick={this.openModal}>Open Modal</button>
         <ReactModal
           isOpen={this.state.modalIsOpen}
-          onAfterOpen={this.afterOpenModal}
           onRequestClose={this.closeModal}
           contentLabel="Example Modal"
           overlayClassName="ui dimmer modals top aligned page transition visible active"

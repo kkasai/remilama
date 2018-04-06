@@ -1,9 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Form, Field } from 'react-final-form'
+import { Field } from 'react-final-form'
 import { required, composeValidators, mustBeUUID } from '../validators'
 
-const reviewerName = ({ input, meta }) => (
+const reviewerNameInput = ({ input, meta }) => (
   <div className={'required field' + ((meta.touched && meta.error) ? ' error' : '')}>
      <label>Reviewer Name</label>
      <input type="text" {...input} placeholder="Your name" />
@@ -17,7 +17,7 @@ const reviewerName = ({ input, meta }) => (
 const ReviewerNameField = () => (
   <Field component="input" name="reviewer_name"
          validate={required}>
-    {reviewerName}
+    {reviewerNameInput}
   </Field>
 )
 

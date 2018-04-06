@@ -9,6 +9,7 @@ import Peer from 'peerjs'
 import Modal from '../components/Modal'
 import { Form, Field } from 'react-final-form'
 import ReviewerNameField from '../components/ReviewerNameField'
+import { required, composeValidators, mustBeUUID } from '../validators'
 
 class ReviewerContainer extends React.Component {
   static propTypes = {
@@ -22,19 +23,15 @@ class ReviewerContainer extends React.Component {
   state = {
     peer: null,
     dataConnection: null,
-    reviewId: null
+    review_id: null
   }
 
   componentDidMount() {
     const props = this.props
 
     this.setState({
-      reviewId: props.match.params.id
+      review_id: props.match.params.id
     })
-    // props.onJoinReview({
-    //   review_id: props.match.params.id,
-    //   reviewer_name: null
-    // })
 
     const peer = new Peer({
       host: '/',
@@ -159,6 +156,10 @@ class ReviewerContainer extends React.Component {
   renderJoinForm = ({ handleSubmit, pristine, invalid }) => (
     <form className="ui form" onSubmit={handleSubmit}>
       <div className="fields">
+        <Field component="input" name="review_id"
+               validate={composeValidators(required, mustBeUUID)}
+               type="hidden" value={this.state.review_id}>
+        </Field>
         <ReviewerNameField />
         <div className="field">
           <label>&nbsp;</label>
@@ -187,11 +188,12 @@ class ReviewerContainer extends React.Component {
                     onPageClick={this.onPostComment}
         />
     ) : null
-    const aView = (this.state.reviewId !== reviewer.reviewId) ? (
+    const reviewerModalView = (this.state.review_id !== reviewer.reviewId) ? (
       <Modal modalIsOpen="true">
-        <div className="header">{this.state.reviewId}</div>
+        <div className="header">{this.state.review_id}</div>
         <div className="content">
           <Form
+              initialValues={this.state}
               onSubmit={onJoinReview}
               render={this.renderJoinForm}/>
         </div>
@@ -208,7 +210,7 @@ class ReviewerContainer extends React.Component {
         <Review {...review}
                 onSelectFile={this.onSelectFile}/>
           {documentView}
-          {aView}
+          {reviewerModalView}
       </div>
     )
   }
@@ -243,7 +245,6 @@ const connector = connect(
         })
       },
       onJoinReview: (values, form, cb) => {
-        props.history.push('/review/' + values.review_id + '/reviewer')
         dispatch({
           type: 'JOIN_REVIEW',
           reviewId: values.review_id,
@@ -252,6 +253,7 @@ const connector = connect(
             name: values.reviewer_name
           }
         })
+        window.location.reload()
       },
     }
   }
